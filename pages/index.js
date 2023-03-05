@@ -96,13 +96,13 @@ export default function Home() {
               <div class="col-lg-7 col-12">
                 <div class="hero-text">
                   <div class="hero-title-wrap d-flex align-items-center mb-4">
-                    <h1 class="hero-title mb-0">Hi! I'm Khalid Ali</h1>
+                    <h1 class="hero-title mb-0">Hi! I&#39;m Khalid Ali</h1>
                   </div>
 
                   <h2 class="mb-4">Frontend Developer</h2>
                   <p class="mb-4">
                     <a class="custom-btn btn custom-link" href="#section_2">
-                      Let's begin
+                      Let&#39;s begin
                     </a>
                   </p>
                 </div>
@@ -214,7 +214,7 @@ export default function Home() {
             </div>
             <div class="row align-items-center mt-5">
               <div class="col-lg-12 col-12">
-                <h3 class="text-center mb-5">Companies I've had worked</h3>
+                <h3 class="text-center mb-5">Companies I&#39;ve had worked</h3>
               </div>
 
               <div class="col-6">
