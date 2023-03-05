@@ -2,7 +2,6 @@ import { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Script from "next/script";
-import Image from "next/image";
 import profile from "./profile-image.png";
 
 const validateEmail = (email) => {
