@@ -2,6 +2,7 @@ import { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import Script from "next/script";
+import Image from "next/image";
 import profile from "./profile-image.png";
 
 const validateEmail = (email) => {
@@ -130,7 +131,7 @@ export default function Home() {
           <div class="container">
             <div class="row">
               <div class="col-lg-6 col-12 text-center">
-                <img src="/images/about.jpg" class="about-image img-fluid" alt="" />
+                <Image src="/images/about.jpg" class="about-image img-fluid" alt="" />
               </div>
 
               <div class="col-lg-6 col-12 mt-5 mt-lg-0">
@@ -218,7 +219,7 @@ export default function Home() {
               </div>
 
               <div class="col-6">
-                <img
+                <Image
                   src="https://www.kraftshala.com/static/c501a359d353aff5c1a258e34f2a7a0a/cb864/nav_logo.webp"
                   class="clients-image img-fluid"
                   alt=""
@@ -226,7 +227,7 @@ export default function Home() {
               </div>
 
               <div class="col-6">
-                <img
+                <Image
                   src="https://www.expent.ai/lib_xEWSgZGoxfITcypK/fmiuso9nj3vc0soi.png?w=400"
                   class="clients-image img-fluid"
                   alt=""
@@ -241,7 +242,7 @@ export default function Home() {
             <div class="row">
               <div class="col-lg-8 col-md-8 col-12 ms-auto">
                 <div class="section-title-wrap d-flex justify-content-center align-items-center mb-4">
-                  <img
+                  <Image
                     src="/images/white-desk-work-study-aesthetics.jpg"
                     class="avatar-image img-fluid"
                     alt=""
@@ -262,7 +263,7 @@ export default function Home() {
                   </div>
 
                   <a href="https://www.818-durian.com/" target="_blank" class="popup-image">
-                    <img src="/images/durian.png" class="projects-image img-fluid" alt="" />
+                    <Image src="/images/durian.png" class="projects-image img-fluid" alt="" />
                   </a>
                 </div>
               </div>
@@ -276,7 +277,7 @@ export default function Home() {
                   </div>
 
                   <a href="#" class="popup-image">
-                    <img src="/images/salon.jpeg" class="projects-image img-fluid" alt="" />
+                    <Image src="/images/salon.jpeg" class="projects-image img-fluid" alt="" />
                   </a>
                 </div>
               </div>
@@ -290,7 +291,7 @@ export default function Home() {
                   </div>
 
                   <a href="#" class="popup-image">
-                    <img src="/images/fin.jpeg" class="projects-image img-fluid" alt="" />
+                    <Image src="/images/fin.jpeg" class="projects-image img-fluid" alt="" />
                   </a>
                 </div>
               </div>
