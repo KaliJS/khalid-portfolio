@@ -218,19 +218,11 @@ export default function Home() {
               </div>
 
               <div class="col-6">
-                <Image
-                  src="https://www.kraftshala.com/static/c501a359d353aff5c1a258e34f2a7a0a/cb864/nav_logo.webp"
-                  class="clients-image img-fluid"
-                  alt=""
-                />
+                <Image src="/images/kraftshala.jpg" class="clients-image img-fluid" alt="" />
               </div>
 
               <div class="col-6">
-                <Image
-                  src="https://www.expent.ai/lib_xEWSgZGoxfITcypK/fmiuso9nj3vc0soi.png?w=400"
-                  class="clients-image img-fluid"
-                  alt=""
-                />
+                <Image src="/images/expent.jpg" class="clients-image img-fluid" alt="" />
               </div>
             </div>
           </div>
