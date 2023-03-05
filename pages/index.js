@@ -361,7 +361,7 @@ export default function Home() {
                           onChange={(e) => setMessage(e.target.value)}
                         ></textarea>
 
-                        <label for="floatingTextarea">Tell me about the project</label>
+                        <label for="floatingTextarea">Type your message</label>
                       </div>
                     </div>
 
