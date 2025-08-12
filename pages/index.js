@@ -225,7 +225,8 @@ export default function Home() {
           <div className="container">
             <div className="hero-grid">
               <div className="hero-copy" data-animate="left">
-                <h1 className="hero-title">Hi, I’m <span className="accent">Khalid Ali</span></h1>
+                <p className="hero-kicker">Hi, I’m</p>
+                <h1 className="hero-title"><span className="name-gradient">Khalid Ali</span></h1>
                 <p className="hero-sub">Frontend Developer • React • Next.js • TypeScript</p>
                 <p className="hero-desc">
                   I build responsive, accessible, and SEO-friendly web experiences that are fast, scalable, and delightful.
@@ -244,14 +245,13 @@ export default function Home() {
                 </div>
               </div>
               <div className="hero-visual" data-animate="right">
-                <div className="portrait-wrap">
+                <div className="portrait-wrap hero-orbit">
+                  <div className="orbit-ring" aria-hidden="true" />
                   <img src="/images/portrait-happy-excited-man-holding-laptop-computer.png" alt="Khalid Ali portrait" className="portrait" />
                   <div className="glow" />
-                  <div className="floating floating-a" />
-                  <div className="floating floating-b" />
-                  <div className="floating-badge tilt" aria-label="React">⚛️ React</div>
-                  <div className="floating-badge tilt alt" aria-label="Next.js">▲ Next.js</div>
-                  <div className="floating-badge tilt tri" aria-label="TypeScript">TS</div>
+                  <div className="orbiting t1 tilt" aria-label="React">⚛︎ React</div>
+                  <div className="orbiting t2 tilt" aria-label="Next.js">▲ Next.js</div>
+                  <div className="orbiting t3 tilt" aria-label="TypeScript">TS</div>
                 </div>
               </div>
             </div>
