@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 
 export default function Home() {
@@ -95,6 +95,26 @@ export default function Home() {
       m.addEventListener('mouseleave', magnetLeave);
     });
 
+    // Active nav link on scroll
+    const sections = Array.from(document.querySelectorAll('main section[id]'));
+    const navLinks = Array.from(document.querySelectorAll('.nav a[href^="#"]'));
+    const setActive = (id) => {
+      navLinks.forEach((link) => {
+        const href = link.getAttribute('href');
+        if (href === `#${id}`) link.classList.add('active');
+        else link.classList.remove('active');
+      });
+    };
+    const secObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { threshold: 0.5 }
+    );
+    sections.forEach((s) => secObserver.observe(s));
+
     return () => {
       observer.disconnect();
       window.removeEventListener('resize', resize);
@@ -107,6 +127,7 @@ export default function Home() {
         m.removeEventListener('mousemove', magnetize);
         m.removeEventListener('mouseleave', magnetLeave);
       });
+      secObserver.disconnect();
     };
   }, []);
 
@@ -126,6 +147,16 @@ export default function Home() {
       "https://github.com/KaliJS",
       "https://www.linkedin.com/in/khalid-ali-58b225194/",
     ],
+  };
+
+  const [formName, setFormName] = useState("");
+  const [formEmail, setFormEmail] = useState("");
+  const [formMessage, setFormMessage] = useState("");
+  const submitContact = (e) => {
+    e.preventDefault();
+    const subject = encodeURIComponent(`Portfolio Contact — ${formName}`);
+    const body = encodeURIComponent(`${formMessage}\n\nFrom: ${formName} <${formEmail}>`);
+    window.location.href = `mailto:khalidist759@gmail.com?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -184,6 +215,7 @@ export default function Home() {
             <a href="#experience">Experience</a>
             <a href="#projects">Projects</a>
             <a href="#contact" className="cta">Contact</a>
+            <a href="/resume.pdf" className="cta primary" target="_blank" rel="noreferrer">View Resume</a>
           </nav>
         </div>
       </header>
@@ -201,7 +233,8 @@ export default function Home() {
                 <div className="hero-actions">
                   <a href="#projects" className="btn primary magnetic">View Projects</a>
                   <a href="#contact" className="btn ghost magnetic">Get in touch</a>
-                  </div>
+                  <a href="/resume.pdf" className="btn ghost magnetic">View Resume</a>
+                </div>
                 <div className="meta">
                   <a href="tel:+917291809186">+91 72918 09186</a>
                   <span>•</span>
@@ -229,12 +262,12 @@ export default function Home() {
         <section id="about" className="section" data-animate>
           <div className="container">
             <h2 className="section-title">Professional summary</h2>
-            <p className="lead">
-              Experienced and skilled Frontend Engineer with 4+ years of experience in developing and optimizing responsive web applications.
-              Proficient in JavaScript, React.js, Next.js, and TypeScript with expertise in performance optimization and CI/CD implementation.
-              Adept at collaborating with cross-functional teams to deliver user-centric solutions, improve SEO performance, and integrate RESTful APIs.
-              Passionate about creating seamless, intuitive user experiences that drive business results.
-                  </p>
+            <div className="lead bullets-grid">
+              <div>• 4+ years building fast, accessible, SEO-friendly apps in React, Next.js, and TypeScript.</div>
+              <div>• Led UI revamps improving engagement by 30% and reducing bounce by 25%.</div>
+              <div>• Strong focus on performance, CI/CD automation, and clean component design.</div>
+              <div>• Collaborate closely with design and backend to ship user-centric features.</div>
+            </div>
                 </div>
         </section>
 
@@ -308,41 +341,50 @@ export default function Home() {
         <section id="experience" className="section" data-animate>
           <div className="container">
             <h2 className="section-title">Professional Experience</h2>
-            <div className="timeline">
-              <article className="card glass tilt">
-                <header className="card-head">
-                  <div>
-                    <h3>Frontend Engineer — Expent</h3>
-                    <p className="muted">California, US (Remote) • May 2022 – Present</p>
+            <div className="experience-timeline">
+              <article className="exp-item" data-animate>
+                <div className="exp-rail">
+                  <span className="exp-dot" />
+                </div>
+                <div className="exp-card">
+                  <div className="exp-header">
+                    <img src="/images/expent.jpg" alt="Expent" className="exp-logo" />
+                    <div>
+                      <h3 className="exp-role">Frontend Engineer</h3>
+                      <p className="exp-meta"><span className="brand">Expent</span> • California, US (Remote) • May 2022 – Present</p>
+                    </div>
                   </div>
-                  <img src="/images/expent.jpg" alt="Expent" className="card-logo" />
-                </header>
-                <ul className="card-list">
-                  <li>Translated business requirements into technical specs, enhancing frontend and optimizing procurement flows.</li>
-                  <li>Integrated REST APIs with backend teams ensuring seamless data sync across platforms.</li>
-                  <li>Revamped UI leading to a 30% increase in engagement and 25% reduction in bounce rate.</li>
-                  <li>Implemented CI/CD pipelines to automate deployments and improve developer efficiency.</li>
-                  <li>Optimized performance via profiling and debugging, cutting interaction time by 30%.</li>
-                  <li>Built responsive layouts for optimal UX across devices and screen sizes.</li>
-                  <li>Developed interactive data visualization dashboards for decision-making.</li>
-                </ul>
+                  <ul className="exp-bullets">
+                    <li>Revamped product UI → +30% engagement and −25% bounce.</li>
+                    <li>Integrated REST APIs with error handling and client-side caching.</li>
+                    <li>Implemented CI/CD pipelines for automated test/build/deploy.</li>
+                    <li>Performance tuning: −30% customer interaction time.</li>
+                    <li>Built responsive layouts and data viz dashboards.</li>
+                  </ul>
+                  <div className="exp-tags"><span>React</span><span>Next.js</span><span>TypeScript</span><span>CI/CD</span><span>SEO</span></div>
+                </div>
               </article>
 
-              <article className="card glass tilt">
-                <header className="card-head">
-                  <div>
-                    <h3>Associate Frontend Developer — Kraftshala</h3>
-                    <p className="muted">Delhi, India • Feb 2021 – May 2022</p>
+              <article className="exp-item" data-animate>
+                <div className="exp-rail">
+                  <span className="exp-dot" />
+                </div>
+                <div className="exp-card">
+                  <div className="exp-header">
+                    <img src="/images/kraftshala.jpg" alt="Kraftshala" className="exp-logo" />
+                    <div>
+                      <h3 className="exp-role">Associate Frontend Developer</h3>
+                      <p className="exp-meta"><span className="brand">Kraftshala</span> • Delhi, India • Feb 2021 – May 2022</p>
+                    </div>
                   </div>
-                  <img src="/images/kraftshala.jpg" alt="Kraftshala" className="card-logo" />
-                </header>
-                <ul className="card-list">
-                  <li>Built and maintained marketing site and student learning platform.</li>
-                  <li>Improved SEO and performance; +40% faster load, +20% user retention.</li>
-                  <li>Collaborated with design and engineering to ship user-friendly, accessible features.</li>
-                  <li>Implemented responsive design and accessibility improvements.</li>
-                  <li>Led debugging to promptly resolve web issues and maintain stability.</li>
-                </ul>
+                  <ul className="exp-bullets">
+                    <li>+40% faster loads and +20% retention via image optimization and code-splitting.</li>
+                    <li>Shipped SEO improvements: metadata, structured data, sitemap.</li>
+                    <li>Worked on accessible UI components and design consistency.</li>
+                    <li>Led debugging and reliability improvements.</li>
+                  </ul>
+                  <div className="exp-tags"><span>React</span><span>Performance</span><span>SEO</span><span>Accessibility</span></div>
+                </div>
               </article>
             </div>
           </div>
@@ -357,7 +399,11 @@ export default function Home() {
                 <div className="project-content">
                   <p className="tag">Ecommerce</p>
                   <h3>818-Durian</h3>
-                  <p>Led ecommerce for Singapore-based 818-Durian to make products globally accessible.</p>
+                  <p>Globalized ecommerce presence with performant storefront and SEO.</p>
+                  <div className="project-actions">
+                    <a href="https://www.818-durian.com/" className="btn ghost" target="_blank" rel="noreferrer">Live</a>
+                    <a href="#" className="btn ghost">Code</a>
+                  </div>
               </div>
               </a>
 
@@ -367,6 +413,10 @@ export default function Home() {
                   <p className="tag">Salon Management</p>
                   <h3>Salon Management System</h3>
                   <p>Scheduling, expense and inventory management for salons with online bookings.</p>
+                  <div className="project-actions">
+                    <a href="#" className="btn ghost">Live</a>
+                    <a href="#" className="btn ghost">Code</a>
+                  </div>
             </div>
               </div>
 
@@ -376,6 +426,10 @@ export default function Home() {
                   <p className="tag">Business Dashboard</p>
                   <h3>Business Management System</h3>
                   <p>Invoices, expenses, inventory and client management with dashboard analytics.</p>
+                  <div className="project-actions">
+                    <a href="#" className="btn ghost">Live</a>
+                    <a href="#" className="btn ghost">Code</a>
+                  </div>
               </div>
               </div>
             </div>
@@ -385,10 +439,14 @@ export default function Home() {
         <section id="education" className="section" data-animate>
           <div className="container">
             <h2 className="section-title">Education</h2>
-            <div className="edu">
-              <div>
-                <h3>B.Tech in Computer Science and Engineering</h3>
-                <p className="muted">Guru Gobind Singh Indraprastha University, Delhi • 2020 • GPA: 8.1</p>
+            <div className="cards one full">
+              <div className="card">
+                <div className="card-head">
+                  <div>
+                    <h3>🎓 B.Tech in Computer Science and Engineering</h3>
+                    <p className="muted">Guru Gobind Singh Indraprastha University, Delhi • 2020 • GPA: 8.1</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -437,6 +495,12 @@ export default function Home() {
                 </div>
               </a>
               </div>
+            <form className="contact-form-inline" onSubmit={submitContact}>
+              <input type="text" placeholder="Your name" value={formName} onChange={(e)=>setFormName(e.target.value)} required />
+              <input type="email" placeholder="Your email" value={formEmail} onChange={(e)=>setFormEmail(e.target.value)} required />
+              <textarea placeholder="Message" rows={3} value={formMessage} onChange={(e)=>setFormMessage(e.target.value)} required />
+              <button className="btn primary" type="submit">Let’s Collaborate</button>
+            </form>
             <div className="cta-row">
               <a className="btn primary" href="https://wa.me/917291809186?text=Hi%20Khalid%2C%20let%27s%20connect" target="_blank" rel="noreferrer">Chat on WhatsApp</a>
             </div>
@@ -446,7 +510,14 @@ export default function Home() {
 
       <footer className="site-footer">
         <div className="container">
-          <p>© {new Date().getFullYear()} Khalid Ali — Frontend Developer</p>
+          <p>© {new Date().getFullYear()} Khalid Ali — Frontend Developer • Building delightful, performant UIs.</p>
+          <div className="footer-actions">
+            <a href="#hero" className="btn ghost">Back to Top ↑</a>
+            <div className="socials">
+              <a href="https://github.com/KaliJS" target="_blank" rel="noreferrer">GitHub</a>
+              <a href="https://www.linkedin.com/in/khalid-ali-58b225194/" target="_blank" rel="noreferrer">LinkedIn</a>
+            </div>
+          </div>
     </div>
       </footer>
       <div className="animated-blocks" aria-hidden="true">
