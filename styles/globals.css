@@ -221,11 +221,33 @@ html, body { padding: 0; margin: 0; }
   .hero-grid { grid-template-columns: 1fr; }
   .cards { grid-template-columns: repeat(2, 1fr); }
   .contact-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Skills: 2 columns on tablet */
+  .skills-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Experience: tighten visuals */
+  .exp-header { grid-template-columns: 72px 1fr; }
+  .exp-logo { width: 72px; height: 72px; }
 }
 @media (max-width: 640px) {
   .nav { display: none; }
   .cards { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
+  /* Skills: single column */
+  .skills-grid { grid-template-columns: 1fr; }
+  /* Hero CTAs: primary full-width, two half-width below */
+  .hero-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .hero-actions .btn { width: 100%; text-align: center; }
+  .hero-actions .btn.primary { grid-column: 1 / -1; }
+  /* Experience: compact rail and logos */
+  .exp-item { grid-template-columns: 20px 1fr; }
+  .exp-rail::before { left: 9px; }
+  .exp-dot { left: 2px; width: 14px; height: 14px; }
+  .exp-header { grid-template-columns: 56px 1fr; }
+  .exp-logo { width: 56px; height: 56px; }
+  /* Orbit badges: bring closer to image */
+  .orbiting.t1 { top: -18px; left: -18px; }
+  .orbiting.t2 { top: -18px; right: -18px; }
+  .orbiting.t3 { bottom: -18px; right: 38%; }
+  .hero-section { padding: 45px 0 120px; }
 }
 
 /*---------------------------------------
