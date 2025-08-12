@@ -1,0 +1,9 @@
+/* TEAM */
+Developer: Khalid Ali
+Site: https://your-domain.com
+Twitter: https://twitter.com/
+Location: Delhi, India
+
+/* THANKS */
+Tools: Next.js, React, DM Sans
+

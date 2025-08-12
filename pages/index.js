@@ -1,382 +1,453 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import Head from "next/head";
-import Image from "next/image";
-import profile from "./profile-image.png";
-
-const validateEmail = (email) => {
-  return String(email)
-    .toLowerCase()
-    .match(
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
-};
-
-const isMobileOrTablet = () => {
-  return /(android|iphone|ipad|mobile)/i.test(navigator.userAgent);
-};
 
 export default function Home() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  useEffect(() => {
+    // Reveal on scroll
+    const revealElements = Array.from(document.querySelectorAll('[data-animate]'));
+    const onIntersect = (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    };
+    const observer = new IntersectionObserver(onIntersect, { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.15 });
+    revealElements.forEach((el) => observer.observe(el));
 
-  const submit = () => {
-    if (name.trim().length === 0) {
-      alert("Please enter name");
-      return;
-    }
-    if (email.trim().length === 0) {
-      alert("Please enter email");
-      return;
-    }
-    if (!validateEmail(email)) {
-      alert("Invalid email");
-      return;
-    }
-    if (message.trim().length === 0) {
-      alert("Please enter message");
-      return;
-    }
-    let url =
-      "https://" +
-      (isMobileOrTablet() ? "api" : "web") +
-      ".whatsapp.com/send?phone=7291809186&text=" +
-      "*Name:* " +
-      name +
-      " *Email:* " +
-      email +
-      " *Message:* " +
-      message;
-    window.open(url);
+    // Starfield background
+    const canvas = document.getElementById('bg-stars');
+    const ctx = canvas ? canvas.getContext('2d') : null;
+    let animationId = 0;
+    let stars = [];
+    const resize = () => {
+      if (!canvas || !ctx) return;
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = Math.floor(window.innerWidth * ratio);
+      canvas.height = Math.floor(window.innerHeight * ratio);
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      const count = Math.min(180, Math.floor((canvas.width * canvas.height) / (4500 * ratio)));
+      stars = Array.from({ length: count }).map(() => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        z: Math.random() * 0.8 + 0.2,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
+      }));
+    };
+    const step = () => {
+      if (!canvas || !ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'rgba(255,255,255,0.35)';
+      for (const s of stars) {
+        s.x += s.vx * s.z;
+        s.y += s.vy * s.z;
+        if (s.x < 0) s.x = canvas.width; if (s.x > canvas.width) s.x = 0;
+        if (s.y < 0) s.y = canvas.height; if (s.y > canvas.height) s.y = 0;
+        const r = 0.6 + s.z * 1.2;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      animationId = requestAnimationFrame(step);
+    };
+    resize();
+    step();
+    window.addEventListener('resize', resize);
+
+    // Tilt effects
+    const tiltElements = Array.from(document.querySelectorAll('.tilt'));
+    const handleTilt = (e) => {
+      const target = e.currentTarget;
+      const rect = target.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = (e.clientX - cx) / (rect.width / 2);
+      const dy = (e.clientY - cy) / (rect.height / 2);
+      const rotateX = (dy * -10).toFixed(2);
+      const rotateY = (dx * 10).toFixed(2);
+      target.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(0)`;
+    };
+    const resetTilt = (e) => {
+      e.currentTarget.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg)';
+    };
+    tiltElements.forEach((el) => {
+      el.addEventListener('mousemove', handleTilt);
+      el.addEventListener('mouseleave', resetTilt);
+    });
+
+    // Magnetic buttons
+    const magnets = Array.from(document.querySelectorAll('.magnetic'));
+    const magnetize = (e) => {
+      const m = e.currentTarget;
+      const rect = m.getBoundingClientRect();
+      const mx = e.clientX - (rect.left + rect.width / 2);
+      const my = e.clientY - (rect.top + rect.height / 2);
+      m.style.transform = `translate(${mx * 0.12}px, ${my * 0.12}px)`;
+    };
+    const magnetLeave = (e) => {
+      e.currentTarget.style.transform = 'translate(0, 0)';
+    };
+    magnets.forEach((m) => {
+      m.addEventListener('mousemove', magnetize);
+      m.addEventListener('mouseleave', magnetLeave);
+    });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', resize);
+      if (animationId) cancelAnimationFrame(animationId);
+      tiltElements.forEach((el) => {
+        el.removeEventListener('mousemove', handleTilt);
+        el.removeEventListener('mouseleave', resetTilt);
+      });
+      magnets.forEach((m) => {
+        m.removeEventListener('mousemove', magnetize);
+        m.removeEventListener('mouseleave', magnetLeave);
+      });
+    };
+  }, []);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Khalid Ali",
+    jobTitle: "Frontend Developer",
+    email: "mailto:khalidist759@gmail.com",
+    telephone: "+917291809186",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Delhi",
+      addressCountry: "IN",
+    },
+    sameAs: [
+      "https://github.com/KaliJS",
+      "https://www.linkedin.com/in/khalid-ali-58b225194/",
+    ],
   };
 
   return (
-    <div>
+    <>
       <Head>
-        <title>Khalid Ali</title>
-        <meta name="description" content="Khalid Ali - Frontend Developer" />
+        <title>Khalid Ali | Frontend Developer | React, Next.js, TypeScript</title>
+        <meta
+          name="description"
+          content="Frontend Engineer with 4+ years experience building responsive, high-performance apps in React, Next.js, and TypeScript. SEO-focused, CI/CD, data viz, and UX-driven."
+        />
+        <meta
+          name="keywords"
+          content="Khalid Ali, Frontend Developer, React, Next.js, TypeScript, UI, UX, SEO, JavaScript, Delhi"
+        />
+        <meta name="robots" content="index,follow" />
         <link rel="icon" href="/favicon.ico" />
-        <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
-          crossOrigin="anonymous"
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Khalid Ali | Frontend Developer" />
+        <meta
+          property="og:description"
+          content="Frontend Engineer specializing in React, Next.js, TypeScript, SEO, and performance."
         />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"
-        ></link>
-        <link
-          rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.css"
-          integrity="sha512-WEQNv9d3+sqyHjrqUZobDhFARZDko2wpWdfcpv44lsypsSuMO0kHGd3MQ8rrsBn/Qa39VojphdU6CMkpJUmDVw=="
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer"
+        <meta property="og:image" content="/images/portrait-happy-excited-man-holding-laptop-computer.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Khalid Ali | Frontend Developer" />
+        <meta
+          name="twitter:description"
+          content="High-impact frontend solutions with React, Next.js, and TypeScript."
         />
-
+        <meta name="twitter:image" content="/images/portrait-happy-excited-man-holding-laptop-computer.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
           href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap"
           rel="stylesheet"
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </Head>
-      <nav class="navbar navbar-expand-lg">
-        <div class="container">
-          <a href="#" class="navbar-brand mx-auto mx-lg-0">
-            Portfolio
-          </a>
+
+      <canvas id="bg-stars" aria-hidden="true"></canvas>
+      <div className="gradient-orbs" aria-hidden="true">
+        <div className="orb orb-a" />
+        <div className="orb orb-b" />
+        <div className="orb orb-c" />
+      </div>
+      <header className="site-header">
+        <div className="container wide">
+          <a href="#hero" className="logo">Khalid</a>
+          <nav className="nav">
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#experience">Experience</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact" className="cta">Contact</a>
+          </nav>
         </div>
-      </nav>
+      </header>
+
       <main>
-        <section class="hero d-flex justify-content-center align-items-center" id="section_1">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-7 col-12">
-                <div class="hero-text">
-                  <div class="hero-title-wrap d-flex align-items-center mb-4">
-                    <h1 class="hero-title mb-0">Hi! I&#39;m Khalid Ali</h1>
-                  </div>
-
-                  <h2 class="mb-4">Frontend Developer</h2>
-                  <p class="mb-4">
-                    <a class="custom-btn btn custom-link" href="#section_2">
-                      Let&#39;s begin
-                    </a>
-                  </p>
+        <section id="hero" className="hero-section">
+          <div className="container">
+            <div className="hero-grid">
+              <div className="hero-copy" data-animate>
+                <h1 className="hero-title">Hi, I’m <span className="accent">Khalid Ali</span></h1>
+                <p className="hero-sub">Frontend Developer • React • Next.js • TypeScript</p>
+                <p className="hero-desc">
+                  I build responsive, accessible, and SEO-friendly web experiences that are fast, scalable, and delightful.
+                </p>
+                <div className="hero-actions">
+                  <a href="#projects" className="btn primary magnetic">View Projects</a>
+                  <a href="#contact" className="btn ghost magnetic">Get in touch</a>
+                </div>
+                <div className="meta">
+                  <a href="tel:+917291809186">+91 72918 09186</a>
+                  <span>•</span>
+                  <a href="mailto:khalidist759@gmail.com">khalidist759@gmail.com</a>
+                  <span>•</span>
+                  <span>Delhi, India</span>
                 </div>
               </div>
-
-              <div class="col-lg-5 col-12 position-relative">
-                <div
-                  class="hero-image-wrap"
-                  style={{ backgroundImage: `url(${profile.src})` }}
-                ></div>
-              </div>
-            </div>
-          </div>
-
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-            <path
-              fill="#535da1"
-              fill-opacity="1"
-              d="M0,160L24,160C48,160,96,160,144,138.7C192,117,240,75,288,64C336,53,384,75,432,106.7C480,139,528,181,576,208C624,235,672,245,720,240C768,235,816,213,864,186.7C912,160,960,128,1008,133.3C1056,139,1104,181,1152,202.7C1200,224,1248,224,1296,197.3C1344,171,1392,117,1416,90.7L1440,64L1440,0L1416,0C1392,0,1344,0,1296,0C1248,0,1200,0,1152,0C1104,0,1056,0,1008,0C960,0,912,0,864,0C816,0,768,0,720,0C672,0,624,0,576,0C528,0,480,0,432,0C384,0,336,0,288,0C240,0,192,0,144,0C96,0,48,0,24,0L0,0Z"
-            ></path>
-          </svg>
-        </section>
-
-        <section class="about section-padding" id="section_2">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-6 col-12 text-center">
-                <Image src="/images/about.jpg" class="about-image img-fluid" alt="" />
-              </div>
-
-              <div class="col-lg-6 col-12 mt-5 mt-lg-0">
-                <div class="about-thumb">
-                  <h3 class="pt-2 mb-3">A little bit about me</h3>
-                  <p>
-                    I have worked with cross-functional teams to develop solutions that strike a
-                    balance between commercial goals and technical viability, including designers,
-                    product managers, and developers.
-                  </p>
-                  <p>
-                    I constantly strive to learn and develop, both personally and professionally, by
-                    accepting opportunities to venture outside of my comfort zone, taking on new
-                    challenges, and increasing my knowledge.
-                  </p>
+              <div className="hero-visual" data-animate>
+                <div className="portrait-wrap">
+                  <img src="/images/portrait-happy-excited-man-holding-laptop-computer.png" alt="Khalid Ali portrait" className="portrait" />
+                  <div className="glow" />
+                  <div className="floating floating-a" />
+                  <div className="floating floating-b" />
+                  <div className="floating-badge tilt" aria-label="React">⚛️ React</div>
+                  <div className="floating-badge tilt alt" aria-label="Next.js">▲ Next.js</div>
+                  <div className="floating-badge tilt tri" aria-label="TypeScript">TS</div>
                 </div>
               </div>
             </div>
           </div>
+          <div className="hero-bg" aria-hidden="true" />
         </section>
 
-        <section class="featured section-padding">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-8 col-12 mx-auto">
-                <div class="profile-thumb">
-                  <div class="profile-title">
-                    <h4 class="mb-0">Information</h4>
-                  </div>
-
-                  <div class="profile-body">
-                    <p>
-                      <span class="profile-small-title">Name</span>
-                      <span>Khalid Ali</span>
-                    </p>
-
-                    <p>
-                      <span class="profile-small-title">Email</span>
-                      <span>
-                        <a href="khalidist759@gmail.com">khalidist759@gmail.com</a>
-                      </span>
-                    </p>
-                    <p>
-                      <span class="profile-small-title">LinkedIn</span>
-                      <span>
-                        <a href="https://www.linkedin.com/in/khalid-ali-58b225194/">
-                          khalid-ali-58b225194
-                        </a>
-                      </span>
-                    </p>
-                    <p>
-                      <span class="profile-small-title">Github</span>
-                      <span>
-                        <a href="https://github.com/KaliJS">https://github.com/KaliJS</a>
-                      </span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <section id="about" className="section" data-animate>
+          <div className="container">
+            <h2 className="section-title">Professional summary</h2>
+            <p className="lead">
+              Experienced and skilled Frontend Engineer with 4+ years of experience in developing and optimizing responsive web applications.
+              Proficient in JavaScript, React.js, Next.js, and TypeScript with expertise in performance optimization and CI/CD implementation.
+              Adept at collaborating with cross-functional teams to deliver user-centric solutions, improve SEO performance, and integrate RESTful APIs.
+              Passionate about creating seamless, intuitive user experiences that drive business results.
+            </p>
           </div>
         </section>
 
-        <section class="clients section-padding">
-          <div class="container">
-            <div class="row align-items-center">
-              <div class="col-lg-12 col-12">
-                <h3 class="text-center mb-5">Skills</h3>
-              </div>
-              <div class="skill-set-wrap">
-                <div class="skill-set">HTML</div>
-                <div class="skill-set">CSS</div>
-                <div class="skill-set">JavaScript</div>
-                <div class="skill-set">React Js</div>
-                <div class="skill-set">Redux</div>
-                <div class="skill-set">Material UI</div>
-                <div class="skill-set">AWS</div>
-                <div class="skill-set">Gatsby Js</div>
-                <div class="skill-set">Chart Js</div>
-              </div>
-            </div>
-            <div class="row align-items-center mt-5">
-              <div class="col-lg-12 col-12">
-                <h3 class="text-center mb-5">Companies I&#39;ve had worked</h3>
-              </div>
-
-              <div class="col-6">
-                <Image src="/images/kraftshala.jpg" class="clients-image img-fluid" alt="" />
-              </div>
-
-              <div class="col-6">
-                <Image src="/images/expent.jpg" class="clients-image img-fluid" alt="" />
+        <section id="skills" className="section alt" data-animate>
+          <div className="container">
+            <h2 className="section-title">Technical Skills</h2>
+            <div className="marquee">
+              <div className="marquee__track">
+                <span className="chip">JavaScript</span>
+                <span className="chip">TypeScript</span>
+                <span className="chip">HTML</span>
+                <span className="chip">CSS</span>
+                <span className="chip">React.js</span>
+                <span className="chip">Next.js</span>
+                <span className="chip">Gatsby.js</span>
+                <span className="chip">Laravel</span>
+                <span className="chip">Chart.js</span>
+                <span className="chip">Redux</span>
+                <span className="chip">Redux Toolkit</span>
+                <span className="chip">Context API</span>
+                <span className="chip">Styled Components</span>
+                <span className="chip">Tailwind CSS</span>
+                <span className="chip">Material UI</span>
+                <span className="chip">Webpack</span>
+                <span className="chip">Vite</span>
+                <span className="chip">Git & GitHub</span>
+                <span className="chip">Jest</span>
+                <span className="chip">React Testing Library</span>
+                <span className="chip">REST APIs</span>
+                <span className="chip">AWS</span>
+                <span className="chip">SEO</span>
+                <span className="chip">WCAG</span>
+                <span className="chip">CI/CD</span>
+                <span className="chip">Figma</span>
+                <span className="chip">Postman</span>
+                <span className="chip">Jira</span>
+                {/* duplicate for seamless loop */}
+                <span className="chip">JavaScript</span>
+                <span className="chip">TypeScript</span>
+                <span className="chip">HTML</span>
+                <span className="chip">CSS</span>
+                <span className="chip">React.js</span>
+                <span className="chip">Next.js</span>
+                <span className="chip">Gatsby.js</span>
+                <span className="chip">Laravel</span>
+                <span className="chip">Chart.js</span>
+                <span className="chip">Redux</span>
+                <span className="chip">Redux Toolkit</span>
+                <span className="chip">Context API</span>
+                <span className="chip">Styled Components</span>
+                <span className="chip">Tailwind CSS</span>
+                <span className="chip">Material UI</span>
+                <span className="chip">Webpack</span>
+                <span className="chip">Vite</span>
+                <span className="chip">Git & GitHub</span>
+                <span className="chip">Jest</span>
+                <span className="chip">React Testing Library</span>
+                <span className="chip">REST APIs</span>
+                <span className="chip">AWS</span>
+                <span className="chip">SEO</span>
+                <span className="chip">WCAG</span>
+                <span className="chip">CI/CD</span>
+                <span className="chip">Figma</span>
+                <span className="chip">Postman</span>
+                <span className="chip">Jira</span>
               </div>
             </div>
           </div>
         </section>
 
-        <section class="projects section-padding" id="section_4">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-8 col-md-8 col-12 ms-auto">
-                <div class="section-title-wrap d-flex justify-content-center align-items-center mb-4">
-                  <Image
-                    src="/images/white-desk-work-study-aesthetics.jpg"
-                    class="avatar-image img-fluid"
-                    alt=""
-                  />
+        <section id="experience" className="section" data-animate>
+          <div className="container">
+            <h2 className="section-title">Professional Experience</h2>
+            <div className="timeline">
+              <article className="card glass tilt">
+                <header className="card-head">
+                  <div>
+                    <h3>Frontend Engineer — Expent</h3>
+                    <p className="muted">California, US (Remote) • May 2022 – Present</p>
+                  </div>
+                  <img src="/images/expent.jpg" alt="Expent" className="card-logo" />
+                </header>
+                <ul className="card-list">
+                  <li>Translated business requirements into technical specs, enhancing frontend and optimizing procurement flows.</li>
+                  <li>Integrated REST APIs with backend teams ensuring seamless data sync across platforms.</li>
+                  <li>Revamped UI leading to a 30% increase in engagement and 25% reduction in bounce rate.</li>
+                  <li>Implemented CI/CD pipelines to automate deployments and improve developer efficiency.</li>
+                  <li>Optimized performance via profiling and debugging, cutting interaction time by 30%.</li>
+                  <li>Built responsive layouts for optimal UX across devices and screen sizes.</li>
+                  <li>Developed interactive data visualization dashboards for decision-making.</li>
+                </ul>
+              </article>
 
-                  <h2 class="text-white ms-4 mb-0">Projects</h2>
+              <article className="card glass tilt">
+                <header className="card-head">
+                  <div>
+                    <h3>Associate Frontend Developer — Kraftshala</h3>
+                    <p className="muted">Delhi, India • Feb 2021 – May 2022</p>
+                  </div>
+                  <img src="/images/kraftshala.jpg" alt="Kraftshala" className="card-logo" />
+                </header>
+                <ul className="card-list">
+                  <li>Built and maintained marketing site and student learning platform.</li>
+                  <li>Improved SEO and performance; +40% faster load, +20% user retention.</li>
+                  <li>Collaborated with design and engineering to ship user-friendly, accessible features.</li>
+                  <li>Implemented responsive design and accessibility improvements.</li>
+                  <li>Led debugging to promptly resolve web issues and maintain stability.</li>
+                </ul>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="projects" className="section alt" data-animate>
+          <div className="container">
+            <h2 className="section-title">Personal Projects</h2>
+            <div className="cards">
+              <a className="project-card tilt" href="https://www.818-durian.com/" target="_blank" rel="noreferrer">
+                <img src="/images/durian.png" alt="818 Durian" />
+                <div className="project-content">
+                  <p className="tag">Ecommerce</p>
+                  <h3>818-Durian</h3>
+                  <p>Led ecommerce for Singapore-based 818-Durian to make products globally accessible.</p>
+                </div>
+              </a>
+
+              <div className="project-card tilt">
+                <img src="/images/salon.jpeg" alt="Salon Management" />
+                <div className="project-content">
+                  <p className="tag">Salon Management</p>
+                  <h3>Salon Management System</h3>
+                  <p>Scheduling, expense and inventory management for salons with online bookings.</p>
                 </div>
               </div>
 
-              <div class="clearfix"></div>
-
-              <div class="col-lg-4 col-md-6 col-12">
-                <div class="projects-thumb">
-                  <div class="projects-info">
-                    <small class="projects-tag">Ecommerce</small>
-
-                    <h3 class="projects-title">818 Durian</h3>
-                  </div>
-
-                  <a href="https://www.818-durian.com/" target="_blank" class="popup-image">
-                    <Image src="/images/durian.png" class="projects-image img-fluid" alt="" />
-                  </a>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-md-6 col-12">
-                <div class="projects-thumb">
-                  <div class="projects-info">
-                    <small class="projects-tag">Appointments Booking</small>
-
-                    <h3 class="projects-title">OBW Salon</h3>
-                  </div>
-
-                  <a href="#" class="popup-image">
-                    <Image src="/images/salon.jpeg" class="projects-image img-fluid" alt="" />
-                  </a>
-                </div>
-              </div>
-
-              <div class="col-lg-4 col-md-6 col-12">
-                <div class="projects-thumb">
-                  <div class="projects-info">
-                    <small class="projects-tag">Finance Management</small>
-
-                    <h3 class="projects-title">Bhartiya Finserv</h3>
-                  </div>
-
-                  <a href="#" class="popup-image">
-                    <Image src="/images/fin.jpeg" class="projects-image img-fluid" alt="" />
-                  </a>
+              <div className="project-card tilt">
+                <img src="/images/fin.jpeg" alt="Business Management System" />
+                <div className="project-content">
+                  <p className="tag">Business Dashboard</p>
+                  <h3>Business Management System</h3>
+                  <p>Invoices, expenses, inventory and client management with dashboard analytics.</p>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section class="contact section-padding" id="section_5">
-          <div class="container">
-            <div class="row">
-              <div class="col-12">
-                <h3 class="text-center mb-5">Contact</h3>
+        <section id="education" className="section" data-animate>
+          <div className="container">
+            <h2 className="section-title">Education</h2>
+            <div className="edu">
+              <div>
+                <h3>B.Tech in Computer Science and Engineering</h3>
+                <p className="muted">Guru Gobind Singh Indraprastha University, Delhi • 2020 • GPA: 8.1</p>
               </div>
+            </div>
+          </div>
+        </section>
 
-              <div class="col-md-6 col-12 ps-lg-0">
-                <div class="contact-info d-flex flex-column">
-                  <strong class="site-footer-title d-block mb-3">Email</strong>
-                  <p>
-                    <a href="mailto:khalidist759@gmail.com">khalidist759@gmail.com</a>
-                  </p>
+        <section id="certs" className="section alt" data-animate>
+          <div className="container">
+            <h2 className="section-title">Certifications & Awards</h2>
+            <ul className="bullets">
+              <li>Systems Engineer Trainee — Infosys (Jan 2021)</li>
+              <li>Kode Krusher Award (Problem Solver) — Kraftshala (Dec 2021)</li>
+            </ul>
+          </div>
+        </section>
 
-                  <strong class="site-footer-title d-block mt-3 mb-3">LinkedIn</strong>
-                  <p class="mb-0">
-                    <a href="https://www.linkedin.com/in/khalid-ali-58b225194/">
-                      khalid-ali-58b225194
-                    </a>
-                  </p>
-
-                  <strong class="site-footer-title d-block mt-3 mb-3">Github</strong>
-                  <p class="mb-0">
-                    <a href="https://github.com/KaliJS">https://github.com/KaliJS</a>
-                  </p>
+        <section id="contact" className="section contact-section" data-animate>
+          <div className="container">
+            <h2 className="section-title">Contact</h2>
+            <div className="contact-grid">
+              <a className="contact-card" href="tel:+917291809186">
+                <span className="contact-icon">📞</span>
+                <div>
+                  <h3>Phone</h3>
+                  <p>+91 72918 09186</p>
                 </div>
-              </div>
-
-              <div class="col-lg-6 col-12 mt-5 mt-lg-0">
-                <div class="custom-form contact-form">
-                  <div class="row">
-                    <div class="col-lg-6 col-md-6 col-12">
-                      <div class="form-floating">
-                        <input
-                          type="text"
-                          name="name"
-                          class="form-control"
-                          placeholder="Name"
-                          value={name}
-                          onChange={(e) => setName(e.target.value)}
-                        />
-
-                        <label for="floatingInput">Name</label>
-                      </div>
-                    </div>
-
-                    <div class="col-lg-6 col-md-6 col-12">
-                      <div class="form-floating">
-                        <input
-                          type="email"
-                          name="email"
-                          class="form-control"
-                          placeholder="Email address"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
-
-                        <label for="floatingInput">Email address</label>
-                      </div>
-                    </div>
-
-                    <div class="col-lg-12 col-12">
-                      <div class="form-floating">
-                        <textarea
-                          class="form-control"
-                          value={message}
-                          id="message"
-                          name="message"
-                          placeholder="Type your message"
-                          onChange={(e) => setMessage(e.target.value)}
-                        ></textarea>
-
-                        <label for="floatingTextarea">Type your message</label>
-                      </div>
-                    </div>
-
-                    <div class="col-lg-3 col-12 ms-auto">
-                      <button onClick={submit} class="form-control">
-                        Send
-                      </button>
-                    </div>
-                  </div>
+              </a>
+              <a className="contact-card" href="mailto:khalidist759@gmail.com">
+                <span className="contact-icon">✉️</span>
+                <div>
+                  <h3>Email</h3>
+                  <p>khalidist759@gmail.com</p>
                 </div>
-              </div>
+              </a>
+              <a className="contact-card" href="https://www.linkedin.com/in/khalid-ali-58b225194/" target="_blank" rel="noreferrer">
+                <span className="contact-icon">🔗</span>
+                <div>
+                  <h3>LinkedIn</h3>
+                  <p>khalid-ali-58b225194</p>
+                </div>
+              </a>
+              <a className="contact-card" href="https://github.com/KaliJS" target="_blank" rel="noreferrer">
+                <span className="contact-icon">👨‍💻</span>
+                <div>
+                  <h3>GitHub</h3>
+                  <p>github.com/KaliJS</p>
+                </div>
+              </a>
+            </div>
+            <div className="cta-row">
+              <a className="btn primary" href="https://wa.me/917291809186?text=Hi%20Khalid%2C%20let%27s%20connect" target="_blank" rel="noreferrer">Chat on WhatsApp</a>
             </div>
           </div>
         </section>
       </main>
-    </div>
+
+      <footer className="site-footer">
+        <div className="container">
+          <p>© {new Date().getFullYear()} Khalid Ali — Frontend Developer</p>
+        </div>
+      </footer>
+    </>
   );
 }
