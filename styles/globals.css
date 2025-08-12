@@ -127,6 +127,15 @@ html, body { padding: 0; margin: 0; }
 .marquee__track { display: inline-flex; gap: 12px; white-space: nowrap; will-change: transform; padding: 8px 0; animation: marquee 18s linear infinite; }
 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
+.skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.skill-card { background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.18); }
+.skill-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.skill-emoji { font-size: 18px; }
+.skill-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.skill-list li { display: grid; grid-template-columns: 1fr 140px; align-items: center; gap: 10px; }
+.bar { position: relative; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 999px; height: 8px; overflow: hidden; }
+.bar i { position: absolute; left: 0; top: 0; bottom: 0; width: var(--p); background: linear-gradient(90deg, var(--secondary-color), var(--primary-color)); border-radius: 999px; box-shadow: 0 0 20px rgba(139,92,246,.25); }
+
 .timeline { display: grid; gap: 24px; }
 .card { background: rgba(255,255,255,0.07); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; box-shadow: 0 12px 40px rgba(0,0,0,.22); transition: transform .25s ease; color: var(--dark-color); }
 .glass { background: linear-gradient(180deg, rgba(255,255,255,.76), rgba(255,255,255,.6)); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.6); }

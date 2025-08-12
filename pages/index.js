@@ -274,65 +274,63 @@ export default function Home() {
         <section id="skills" className="section alt" data-animate>
           <div className="container">
             <h2 className="section-title">Technical Skills</h2>
-            <div className="marquee">
-              <div className="marquee__track">
-                <span className="chip">JavaScript</span>
-                <span className="chip">TypeScript</span>
-                <span className="chip">HTML</span>
-                <span className="chip">CSS</span>
-                <span className="chip">React.js</span>
-                <span className="chip">Next.js</span>
-                <span className="chip">Gatsby.js</span>
-                <span className="chip">Laravel</span>
-                <span className="chip">Chart.js</span>
-                <span className="chip">Redux</span>
-                <span className="chip">Redux Toolkit</span>
-                <span className="chip">Context API</span>
-                <span className="chip">Styled Components</span>
-                <span className="chip">Tailwind CSS</span>
-                <span className="chip">Material UI</span>
-                <span className="chip">Webpack</span>
-                <span className="chip">Vite</span>
-                <span className="chip">Git & GitHub</span>
-                <span className="chip">Jest</span>
-                <span className="chip">React Testing Library</span>
-                <span className="chip">REST APIs</span>
-                <span className="chip">AWS</span>
-                <span className="chip">SEO</span>
-                <span className="chip">WCAG</span>
-                <span className="chip">CI/CD</span>
-                <span className="chip">Figma</span>
-                <span className="chip">Postman</span>
-                <span className="chip">Jira</span>
-                {/* duplicate for seamless loop */}
-                <span className="chip">JavaScript</span>
-                <span className="chip">TypeScript</span>
-                <span className="chip">HTML</span>
-                <span className="chip">CSS</span>
-                <span className="chip">React.js</span>
-                <span className="chip">Next.js</span>
-                <span className="chip">Gatsby.js</span>
-                <span className="chip">Laravel</span>
-                <span className="chip">Chart.js</span>
-                <span className="chip">Redux</span>
-                <span className="chip">Redux Toolkit</span>
-                <span className="chip">Context API</span>
-                <span className="chip">Styled Components</span>
-                <span className="chip">Tailwind CSS</span>
-                <span className="chip">Material UI</span>
-                <span className="chip">Webpack</span>
-                <span className="chip">Vite</span>
-                <span className="chip">Git & GitHub</span>
-                <span className="chip">Jest</span>
-                <span className="chip">React Testing Library</span>
-                <span className="chip">REST APIs</span>
-                <span className="chip">AWS</span>
-                <span className="chip">SEO</span>
-                <span className="chip">WCAG</span>
-                <span className="chip">CI/CD</span>
-                <span className="chip">Figma</span>
-                <span className="chip">Postman</span>
-                <span className="chip">Jira</span>
+            <div className="skills-grid">
+              <div className="skill-card">
+                <div className="skill-head"><span className="skill-emoji">⌨️</span><h3>Languages</h3></div>
+                <ul className="skill-list">
+                  <li><span>JavaScript</span><div className="bar"><i style={{"--p":"92%"}} /></div></li>
+                  <li><span>TypeScript</span><div className="bar"><i style={{"--p":"85%"}} /></div></li>
+                  <li><span>HTML / CSS</span><div className="bar"><i style={{"--p":"95%"}} /></div></li>
+                  <li><span>Python</span><div className="bar"><i style={{"--p":"60%"}} /></div></li>
+                </ul>
+              </div>
+
+              <div className="skill-card">
+                <div className="skill-head"><span className="skill-emoji">⚛️</span><h3>Frameworks</h3></div>
+                <ul className="skill-list">
+                  <li><span>React.js</span><div className="bar"><i style={{"--p":"92%"}} /></div></li>
+                  <li><span>Next.js</span><div className="bar"><i style={{"--p":"90%"}} /></div></li>
+                  <li><span>Gatsby.js</span><div className="bar"><i style={{"--p":"75%"}} /></div></li>
+                  <li><span>Laravel</span><div className="bar"><i style={{"--p":"55%"}} /></div></li>
+                </ul>
+              </div>
+
+              <div className="skill-card">
+                <div className="skill-head"><span className="skill-emoji">🗂️</span><h3>State & Data</h3></div>
+                <ul className="skill-list">
+                  <li><span>Redux / RTK</span><div className="bar"><i style={{"--p":"88%"}} /></div></li>
+                  <li><span>Context API</span><div className="bar"><i style={{"--p":"86%"}} /></div></li>
+                  <li><span>REST APIs</span><div className="bar"><i style={{"--p":"90%"}} /></div></li>
+                  <li><span>Chart.js</span><div className="bar"><i style={{"--p":"70%"}} /></div></li>
+                </ul>
+              </div>
+
+              <div className="skill-card">
+                <div className="skill-head"><span className="skill-emoji">🎨</span><h3>Styling</h3></div>
+                <ul className="skill-list">
+                  <li><span>Tailwind CSS</span><div className="bar"><i style={{"--p":"90%"}} /></div></li>
+                  <li><span>Material UI</span><div className="bar"><i style={{"--p":"88%"}} /></div></li>
+                  <li><span>Styled Components</span><div className="bar"><i style={{"--p":"80%"}} /></div></li>
+                </ul>
+              </div>
+
+              <div className="skill-card">
+                <div className="skill-head"><span className="skill-emoji">🧪</span><h3>Testing</h3></div>
+                <ul className="skill-list">
+                  <li><span>Jest</span><div className="bar"><i style={{"--p":"75%"}} /></div></li>
+                  <li><span>React Testing Library</span><div className="bar"><i style={{"--p":"72%"}} /></div></li>
+                </ul>
+              </div>
+
+              <div className="skill-card">
+                <div className="skill-head"><span className="skill-emoji">⚙️</span><h3>Tooling & DevOps</h3></div>
+                <ul className="skill-list">
+                  <li><span>Webpack / Vite</span><div className="bar"><i style={{"--p":"85%"}} /></div></li>
+                  <li><span>Git & GitHub</span><div className="bar"><i style={{"--p":"90%"}} /></div></li>
+                  <li><span>AWS</span><div className="bar"><i style={{"--p":"60%"}} /></div></li>
+                  <li><span>CI/CD</span><div className="bar"><i style={{"--p":"82%"}} /></div></li>
+                  <li><span>Figma / Postman / Jira</span><div className="bar"><i style={{"--p":"78%"}} /></div></li>
+                </ul>
               </div>
             </div>
           </div>
