@@ -174,6 +174,7 @@ export default function Home() {
         <div className="orb orb-b" />
         <div className="orb orb-c" />
       </div>
+      <div className="pattern-grid" aria-hidden="true" />
       <header className="site-header">
         <div className="container wide">
           <a href="#hero" className="logo">Khalid</a>
@@ -191,7 +192,7 @@ export default function Home() {
         <section id="hero" className="hero-section">
           <div className="container">
             <div className="hero-grid">
-              <div className="hero-copy" data-animate>
+              <div className="hero-copy" data-animate="left">
                 <h1 className="hero-title">Hi, I’m <span className="accent">Khalid Ali</span></h1>
                 <p className="hero-sub">Frontend Developer • React • Next.js • TypeScript</p>
                 <p className="hero-desc">
@@ -200,7 +201,7 @@ export default function Home() {
                 <div className="hero-actions">
                   <a href="#projects" className="btn primary magnetic">View Projects</a>
                   <a href="#contact" className="btn ghost magnetic">Get in touch</a>
-                </div>
+                  </div>
                 <div className="meta">
                   <a href="tel:+917291809186">+91 72918 09186</a>
                   <span>•</span>
@@ -209,7 +210,7 @@ export default function Home() {
                   <span>Delhi, India</span>
                 </div>
               </div>
-              <div className="hero-visual" data-animate>
+              <div className="hero-visual" data-animate="right">
                 <div className="portrait-wrap">
                   <img src="/images/portrait-happy-excited-man-holding-laptop-computer.png" alt="Khalid Ali portrait" className="portrait" />
                   <div className="glow" />
@@ -233,8 +234,8 @@ export default function Home() {
               Proficient in JavaScript, React.js, Next.js, and TypeScript with expertise in performance optimization and CI/CD implementation.
               Adept at collaborating with cross-functional teams to deliver user-centric solutions, improve SEO performance, and integrate RESTful APIs.
               Passionate about creating seamless, intuitive user experiences that drive business results.
-            </p>
-          </div>
+                  </p>
+                </div>
         </section>
 
         <section id="skills" className="section alt" data-animate>
@@ -357,7 +358,7 @@ export default function Home() {
                   <p className="tag">Ecommerce</p>
                   <h3>818-Durian</h3>
                   <p>Led ecommerce for Singapore-based 818-Durian to make products globally accessible.</p>
-                </div>
+              </div>
               </a>
 
               <div className="project-card tilt">
@@ -366,7 +367,7 @@ export default function Home() {
                   <p className="tag">Salon Management</p>
                   <h3>Salon Management System</h3>
                   <p>Scheduling, expense and inventory management for salons with online bookings.</p>
-                </div>
+            </div>
               </div>
 
               <div className="project-card tilt">
@@ -375,7 +376,7 @@ export default function Home() {
                   <p className="tag">Business Dashboard</p>
                   <h3>Business Management System</h3>
                   <p>Invoices, expenses, inventory and client management with dashboard analytics.</p>
-                </div>
+              </div>
               </div>
             </div>
           </div>
@@ -400,7 +401,7 @@ export default function Home() {
               <li>Systems Engineer Trainee — Infosys (Jan 2021)</li>
               <li>Kode Krusher Award (Problem Solver) — Kraftshala (Dec 2021)</li>
             </ul>
-          </div>
+              </div>
         </section>
 
         <section id="contact" className="section contact-section" data-animate>
@@ -426,7 +427,7 @@ export default function Home() {
                 <div>
                   <h3>LinkedIn</h3>
                   <p>khalid-ali-58b225194</p>
-                </div>
+              </div>
               </a>
               <a className="contact-card" href="https://github.com/KaliJS" target="_blank" rel="noreferrer">
                 <span className="contact-icon">👨‍💻</span>
@@ -435,7 +436,7 @@ export default function Home() {
                   <p>github.com/KaliJS</p>
                 </div>
               </a>
-            </div>
+              </div>
             <div className="cta-row">
               <a className="btn primary" href="https://wa.me/917291809186?text=Hi%20Khalid%2C%20let%27s%20connect" target="_blank" rel="noreferrer">Chat on WhatsApp</a>
             </div>
@@ -446,8 +447,13 @@ export default function Home() {
       <footer className="site-footer">
         <div className="container">
           <p>© {new Date().getFullYear()} Khalid Ali — Frontend Developer</p>
-        </div>
+    </div>
       </footer>
+      <div className="animated-blocks" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </>
   );
 }
