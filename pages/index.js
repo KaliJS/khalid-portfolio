@@ -241,7 +241,7 @@ export default function Home() {
                   <span>•</span>
                   <a href="mailto:khalidist759@gmail.com">khalidist759@gmail.com</a>
                   <span>•</span>
-                  <span>Delhi, India</span>
+                  <a>Delhi, India</a>
                 </div>
               </div>
               <div className="hero-visual" data-animate="right">
