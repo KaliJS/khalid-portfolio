@@ -24,13 +24,14 @@ https://templatemo.com/tm-578-first-portfolio
 
   --body-font-family: "DM Sans", sans-serif;
 
-  --h1-font-size: 62px;
-  --h2-font-size: 48px;
-  --h3-font-size: 36px;
-  --h4-font-size: 32px;
-  --h5-font-size: 24px;
-  --h6-font-size: 22px;
-  --p-font-size: 18px;
+  /* Mobile-first type scale */
+  --h1-font-size: 36px;
+  --h2-font-size: 28px;
+  --h3-font-size: 24px;
+  --h4-font-size: 20px;
+  --h5-font-size: 18px;
+  --h6-font-size: 16px;
+  --p-font-size: 16px;
   --menu-font-size: 12px;
   --copyright-font-size: 14px;
 
@@ -54,7 +55,7 @@ body {
 
 /*---------- Modern layout + animations ----------*/
 * { box-sizing: border-box; }
-html, body { padding: 0; margin: 0; }
+html, body { padding: 0; margin: 0; overflow-x: hidden; }
 .container { max-width: 1180px; padding: 0 24px; margin: 0 auto; }
 .container.wide { max-width: 1320px; }
 
@@ -69,7 +70,7 @@ html, body { padding: 0; margin: 0; }
 
 .hero-section { position: relative; overflow: hidden; padding: 160px 0 120px; }
 .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center; }
-.hero-title { font-size: clamp(42px, 6vw, 72px); line-height: 1.08; letter-spacing: -0.25px; color: var(--bg-color); text-shadow: 0 0 18px rgba(139, 92, 246, 0.28), 0 0 30px rgba(34, 211, 238, 0.2); }
+.hero-title { font-size: clamp(28px, 6vw, 72px); line-height: 1.1; letter-spacing: -0.25px; color: var(--bg-color); text-shadow: 0 0 18px rgba(139, 92, 246, 0.28), 0 0 30px rgba(34, 211, 238, 0.2); }
 .accent { color: var(--secondary-color); }
 .hero-kicker { letter-spacing: .2em; text-transform: uppercase; color: var(--p-color); font-weight: 700; margin: 0 0 6px; font-size: 12px; }
 .name-gradient { background: linear-gradient(90deg, var(--secondary-color), var(--primary-color)); -webkit-background-clip: text; background-clip: text; color: transparent; }
@@ -111,7 +112,7 @@ html, body { padding: 0; margin: 0; }
 .orb-b { width: 300px; height: 300px; right: 10%; top: 30%; background: radial-gradient(circle at 30% 70%, #8b5cf6, transparent 60%), radial-gradient(circle at 70% 30%, #22d3ee, transparent 60%); animation: float 12s ease-in-out infinite; }
 .orb-c { width: 260px; height: 260px; left: 40%; top: 0%; background: radial-gradient(circle at 50% 50%, #ff00e5, transparent 60%), radial-gradient(circle at 70% 30%, #22d3ee, transparent 60%); animation: float 14s ease-in-out infinite; }
 
-.section { padding: 96px 0; }
+.section { padding: 72px 0; }
 .section .section-title + .lead { margin-top: 8px; }
 .section.alt { background: var(--section-bg-color); }
 .section-title { font-size: clamp(24px, 4vw, 40px); margin-bottom: 18px; letter-spacing: -0.2px; }
@@ -129,7 +130,7 @@ html, body { padding: 0; margin: 0; }
 .skill-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .skill-emoji { font-size: 18px; }
 .skill-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.skill-list li { display: grid; grid-template-columns: 1fr 140px; align-items: center; gap: 10px; }
+.skill-list li { display: grid; grid-template-columns: 1fr min(34%, 160px); align-items: center; gap: 10px; min-width: 0; }
 .bar { position: relative; background: rgba(255,255,255,0.06); border: 1px solid var(--border-color); border-radius: 999px; height: 8px; overflow: hidden; }
 .bar i { position: absolute; left: 0; top: 0; bottom: 0; width: var(--p); background: linear-gradient(90deg, var(--secondary-color), var(--primary-color)); border-radius: 999px; box-shadow: 0 0 20px rgba(139,92,246,.25); }
 
@@ -230,6 +231,8 @@ html, body { padding: 0; margin: 0; }
   .contact-grid { grid-template-columns: 1fr; }
   /* Skills: single column */
   .skills-grid { grid-template-columns: 1fr; }
+  .skill-list li { grid-template-columns: 1fr; }
+  .bar { height: 10px; }
   /* Hero CTAs: primary full-width, two half-width below */
   .hero-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .hero-actions .btn { width: 100%; text-align: center; }
@@ -245,6 +248,37 @@ html, body { padding: 0; margin: 0; }
   .orbiting.t2 { top: -18px; right: -18px; }
   .orbiting.t3 { bottom: -18px; right: 38%; }
   .hero-section { padding: 45px 0 120px; }
+  /* Contact form: single column */
+  .contact-form-inline { grid-template-columns: 1fr; }
+  .contact-form-inline button { width: 100%; }
+}
+
+/* Tablet and up type scale */
+@media (min-width: 640px) {
+  :root {
+    --h1-font-size: 48px;
+    --h2-font-size: 36px;
+    --h3-font-size: 28px;
+    --h4-font-size: 24px;
+    --h5-font-size: 20px;
+    --h6-font-size: 18px;
+    --p-font-size: 17px;
+  }
+  .section { padding: 88px 0; }
+}
+
+/* Desktop and up type scale */
+@media (min-width: 1024px) {
+  :root {
+    --h1-font-size: 62px;
+    --h2-font-size: 48px;
+    --h3-font-size: 36px;
+    --h4-font-size: 32px;
+    --h5-font-size: 24px;
+    --h6-font-size: 22px;
+    --p-font-size: 18px;
+  }
+  .section { padding: 96px 0; }
 }
 
 /*---------------------------------------
