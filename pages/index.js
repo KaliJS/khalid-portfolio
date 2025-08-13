@@ -159,6 +159,21 @@ export default function Home() {
     window.location.href = `mailto:khalidist759@gmail.com?subject=${subject}&body=${body}`;
   };
 
+  // Theme toggle with ARIA live announcement
+  const [theme, setTheme] = useState(null);
+  useEffect(() => {
+    const current = document.documentElement.getAttribute('data-theme') || 'dark';
+    setTheme(current);
+  }, []);
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    const live = document.getElementById('theme-status');
+    if (live) live.textContent = `Theme set to ${next}`;
+    setTheme(next);
+  };
+
   return (
     <>
       <Head>
@@ -206,6 +221,11 @@ export default function Home() {
         <div className="orb orb-c" />
       </div>
       <div className="pattern-grid" aria-hidden="true" />
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `if ('serviceWorker' in navigator) { window.addEventListener('load', function() { navigator.serviceWorker.register('/sw.js'); }); }`,
+        }}
+      />
       <header className="site-header">
         <div className="container wide">
           <a href="#hero" className="logo">Khalid</a>
@@ -217,6 +237,9 @@ export default function Home() {
             <a href="#contact" className="cta">Contact</a>
             <a href="/resume.pdf" className="cta primary" target="_blank" rel="noreferrer">View Resume</a>
           </nav>
+          <button className="btn ghost theme-toggle" aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'} onClick={toggleTheme}>
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
         </div>
       </header>
 
@@ -235,7 +258,7 @@ export default function Home() {
                   <a href="#projects" className="btn primary magnetic">View Projects</a>
                   <a href="#contact" className="btn ghost magnetic">Get in touch</a>
                   <a href="/resume.pdf" className="btn ghost magnetic">View Resume</a>
-                </div>
+                  </div>
                 <div className="meta">
                   <a href="tel:+917291809186">+91 72918 09186</a>
                   <span>•</span>
@@ -320,7 +343,7 @@ export default function Home() {
                   <li><span>Jest</span><div className="bar"><i style={{"--p":"75%"}} /></div></li>
                   <li><span>React Testing Library</span><div className="bar"><i style={{"--p":"72%"}} /></div></li>
                 </ul>
-              </div>
+                </div>
 
               <div className="skill-card">
                 <div className="skill-head"><span className="skill-emoji">⚙️</span><h3>Tooling & DevOps</h3></div>
@@ -414,7 +437,7 @@ export default function Home() {
                   <div className="project-actions">
                     <a href="#" className="btn ghost">Live</a>
                     <a href="#" className="btn ghost">Code</a>
-                  </div>
+              </div>
             </div>
               </div>
 

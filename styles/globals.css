@@ -65,6 +65,7 @@ html, body { padding: 0; margin: 0; overflow-x: hidden; }
 .nav a { position: relative; margin-left: 16px; color: var(--p-color); font-weight: 600; }
 .nav a::after { content: ''; position: absolute; left: 0; bottom: -6px; width: 0%; height: 2px; background: linear-gradient(90deg, var(--secondary-color), var(--primary-color)); transition: width .25s ease; border-radius: 2px; }
 .nav a:hover::after { width: 100%; }
+.theme-toggle { margin-left: 12px; }
 .nav .cta { background: var(--secondary-color); color: #fff; padding: 8px 14px; border-radius: 999px; }
 .nav .cta:hover { background: var(--primary-color); color: #fff; }
 
@@ -201,6 +202,15 @@ html, body { padding: 0; margin: 0; overflow-x: hidden; }
 :focus-visible { outline: 2px solid var(--secondary-color); outline-offset: 3px; border-radius: 8px; }
 .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
 .skip-link:focus { position: fixed; left: 16px; top: 16px; width: auto; height: auto; padding: 8px 12px; background: #111827; color: #fff; border-radius: 8px; z-index: 9999; }
+
+/* Theme variables */
+[data-theme="light"] {
+  --bg-color: #f7f8fb;
+  --section-bg-color: #ffffff;
+  --dark-color: #0b1220;
+  --p-color: #334155;
+  --border-color: rgba(2, 6, 23, 0.12);
+}
 
 /* Pattern grid and animated blocks to fill space tastefully */
 .pattern-grid { position: fixed; inset: 0; z-index: -3; pointer-events: none; background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 24px 24px; animation: gridShift 30s linear infinite; opacity: .4; }
